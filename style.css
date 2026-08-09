@@ -1,0 +1,360 @@
+/* ============================================
+   UNIVERSAL RESET & BODY
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ============================================
+   CONTAINER
+   ============================================ */
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* ============================================
+   HEADING
+   ============================================ */
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ============================================
+   SEARCH SECTION
+   ============================================ */
+
+.search-section {
+    margin-bottom: 20px;
+}
+
+.search-section input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-section input:focus {
+    border-color: #667eea;
+}
+
+/* ============================================
+   INPUT SECTION
+   ============================================ */
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#todoInput {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#todoInput:focus {
+    border-color: #667eea;
+}
+
+#addBtn {
+    padding: 10px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+#addBtn:hover {
+    background: #5568d3;
+}
+
+/* ============================================
+   FILTER BUTTONS WITH COUNTERS
+   ============================================ */
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-btn:hover {
+    border-color: #667eea;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Counter badge inside button */
+.filter-btn .count {
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* ============================================
+   TODO LIST
+   ============================================ */
+
+.todo-list {
+    list-style: none;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f5f5f5;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+    background: #efefef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   TODO ITEM - COMPLETED STATE
+   ============================================ */
+
+.todo-item.completed {
+    opacity: 0.6;
+}
+
+.todo-item.completed .todo-text {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* ============================================
+   TODO ITEM - CHECKBOX
+   ============================================ */
+
+.todo-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+/* ============================================
+   TODO ITEM - TEXT
+   ============================================ */
+
+.todo-text {
+    flex: 1;
+    color: #333;
+    word-break: break-word;
+}
+
+/* ============================================
+   TODO ITEM - BUTTONS (NORMAL MODE)
+   ============================================ */
+
+.edit-btn {
+    background: #ffc107;
+    color: black;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: #ffb300;
+}
+
+.delete-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #ff5252;
+}
+
+/* ============================================
+   TODO ITEM - EDIT MODE
+   ============================================ */
+
+.todo-item.edit-mode {
+    background: #fff3cd;
+    border: 2px solid #667eea;
+}
+
+.todo-item.edit-mode input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #667eea;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    background: white;
+}
+
+.todo-item.edit-mode input[type="text"]:focus {
+    border-color: #5568d3;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+/* ============================================
+   EDIT MODE - ACTION BUTTONS
+   ============================================ */
+
+.edit-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.save-btn {
+    background: #51cf66;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+    background: #40c057;
+}
+
+.cancel-btn {
+    background: #adb5bd;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #868e96;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .input-section {
+        gap: 8px;
+    }
+
+    #todoInput,
+    #addBtn {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .filter-buttons {
+        gap: 8px;
+    }
+
+    .filter-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .filter-btn .count {
+        font-size: 10px;
+    }
+
+    .todo-item {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .save-btn,
+    .cancel-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}

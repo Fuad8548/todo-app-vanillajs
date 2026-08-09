@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Todo List</h1>
+
+        <!-- SEARCH FUNCTIONALITY -->
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Search todos...">
+        </div>
+
+        <!-- INPUT SECTION -->
+        <div class="input-section">
+            <input type="text" id="todoInput" placeholder="Add a new task...">
+            <button id="addBtn">Add</button>
+        </div>
+
+        <!-- FILTER BUTTONS WITH COUNTERS -->
+        <div class="filter-buttons">
+            <button id="filterAll" class="filter-btn active">
+                All <span class="count">(0)</span>
+            </button>
+            <button id="filterActive" class="filter-btn">
+                Active <span class="count">(0)</span>
+            </button>
+            <button id="filterCompleted" class="filter-btn">
+                Completed <span class="count">(0)</span>
+            </button>
+        </div>
+
+        <!-- TODO LIST -->
+        <ul id="todoList" class="todo-list"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
