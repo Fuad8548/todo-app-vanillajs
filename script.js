@@ -1,286 +1,263 @@
-// DOM ELEMENTS ======================
-const todoInput = document.getElementById('todoInput');
-const addBtn = document.getElementById('addBtn');
-const todoList = document.getElementById('todoList');
-const searchInput = document.getElementById('searchInput');
-
-// Filter buttons
-const filterAllBtn = document.getElementById('filterAll');
-const filterActiveBtn = document.getElementById('filterActive');
-const filterCompletedBtn = document.getElementById('filterCompleted');
-
-
 // STATE VARIABLES
-
 const STORAGE_KEY = 'todos';
-let todos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-let filterStatus = 'all';
-let searchQuery = '';
-let editingId = null;
+const state = {
+    todos: JSON.parse(localStorage.getItem(STORAGE_KEY)) || [],
+    filterStatus: 'all',
+    searchQuery: '',
+    editingId: null
+}
+
+
+// DOM ELEMENTS ======================
+const dom = {
+    todoInput: document.getElementById('todoInput'),
+    addBtn: document.getElementById('addBtn'),
+    todoList: document.getElementById('todoList'),
+    searchInput: document.getElementById('searchInput'),
+    
+    // Filter buttons
+    filterButtons: {
+        all: document.getElementById('filterAll'),
+        active: document.getElementById('filterActive'),
+        completed: document.getElementById('filterCompleted')
+    }
+}
 
 
 // INITIALIZATION
+init();
 
-renderTodos();
-updateCounter();
-
-
-// EVENT LISTENERS - Add Todo
-
-addBtn.addEventListener('click', addTodo);
-todoInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addTodo();
-});
+function init(){
+    setupEventListeners();
+    render();
+}
 
 
-// EVENT LISTENERS - Filter
+// EVENT LISTENERS Setup
+function setupEventListeners() {
+    // Add Todo
+    dom.addBtn.addEventListener('click', addTodo);
+    dom.todoInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addTodo();
+    });
 
-filterAllBtn.addEventListener('click', () => {
-    filterStatus = 'all';
-    updateFilterButtons();
-    renderTodos();
-});
+    // Search
+    dom.searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value.toLowerCase();
+        render();
+    });
 
-filterActiveBtn.addEventListener('click', () => {
-    filterStatus = 'active';
-    updateFilterButtons();
-    renderTodos();
-});
-
-filterCompletedBtn.addEventListener('click', () => {
-    filterStatus = 'completed';
-    updateFilterButtons();
-    renderTodos();
-});
-
-
-// EVENT LISTENERS - Search
-
-searchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value.toLowerCase();
-    renderTodos();
-});
+    //Filter Buttons
+    Object.entries(dom.filterButtons).forEach(([status, btn]) => {
+        btn.addEventListener('click', () => {
+            state.filterStatus = status;
+            render();
+        })
+    })
+}
 
 
 // CRUD OPERATIONS
 
 // CREATE - Add new todo
 function addTodo() {
-    const text = todoInput.value.trim();
+    const text = dom.todoInput.value.trim();
     
-    if (text === '') {
+    if (!text) {
         alert('Please enter a task!');
         return;
     }
 
-    const todo = {
+    state.todos.push({
         id: Date.now(),
-        text: text,
+        text,
         completed: false
-    };
-
-    todos.push(todo);
-    saveTodos();
-    todoInput.value = '';
-    renderTodos();
-    updateCounter();
-}
-
-// READ - Display todos with filtering and searching
-function renderTodos() {
-    todoList.innerHTML = '';
-
-    // STEP 1: Filter by status
-    let filteredTodos = todos;
-
-    if (filterStatus === 'active') {
-        filteredTodos = todos.filter(todo => !todo.completed);
-    } else if (filterStatus === 'completed') {
-        filteredTodos = todos.filter(todo => todo.completed);
-    }
-
-    // STEP 2: Filter by search query
-    if (searchQuery !== '') {
-        console.log('Searching for:', searchQuery);
-        filteredTodos = filteredTodos.filter(todo => {
-            const matches = todo.text.toLowerCase().includes(searchQuery);
-            console.log(`Checking "${todo.text}" against "${searchQuery}": ${matches}`);
-            return matches;
-        });
-    }
-
-    // STEP 3: Display todos
-    if (filteredTodos.length === 0) {
-        const emptyMessage = document.createElement('li');
-        emptyMessage.textContent = 'No todos found';
-        emptyMessage.style.textAlign = 'center';
-        emptyMessage.style.color = '#999';
-        emptyMessage.style.padding = '20px';
-        todoList.appendChild(emptyMessage);
-        return;
-    }
-
-    filteredTodos.forEach((todo) => {
-        const li = document.createElement('li');
-        li.className = 'todo-item';
-
-        if (todo.completed) {
-            li.classList.add('completed');
-        }
-
-        // Check if in edit mode
-        if (editingId === todo.id) {
-            li.classList.add('edit-mode');
-            li.innerHTML = `
-                <input 
-                    type="text" 
-                    id="editInput-${todo.id}"
-                    value="${todo.text}"
-                    autocomplete="off"
-                >
-                <div class="edit-actions">
-                    <button class="save-btn">Save</button>
-                    <button class="cancel-btn">Cancel</button>
-                </div>
-            `;
-
-            // DEFINE FIRST
-            const editInput = li.querySelector(`input[type="text"]`);
-            const saveBtn = li.querySelector('.save-btn');
-            const cancelBtn = li.querySelector('.cancel-btn');
-
-            // THEN USE
-            editInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') saveEdit(todo.id);
-                if (e.key === 'Escape') cancelEdit();
-            });
-
-            saveBtn.addEventListener('click', () => saveEdit(todo.id));
-            cancelBtn.addEventListener('click', cancelEdit);
-
-            // Focus input
-            setTimeout(() => {
-                editInput.focus();
-                editInput.select();
-            }, 0);
-
-        } else {
-            console.log('Rendering NORMAL MODE for todo:', todo.id);
-            li.innerHTML = `
-                <input 
-                    type="checkbox" 
-                    ${todo.completed ? 'checked' : ''}
-                    onchange="toggleTodo(${todo.id})"
-                >
-                <span class="todo-text">${todo.text}</span>
-                <button class="edit-btn" onclick="startEdit(${todo.id})">
-                    Edit
-                </button>
-                <button class="delete-btn" onclick="deleteTodo(${todo.id})">
-                    Delete
-                </button>
-            `;
-        }
-
-        todoList.appendChild(li);
     });
+
+    dom.todoInput.value = '';
+    saveTodos();
+    render();
 }
 
-// UPDATE - Toggle completed
 function toggleTodo(id) {
-    todos = todos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    state.todos = state.todos.map(todo => 
+        (todo.id === id ? {...todo, completed: !todo.completed } : todo)
     );
     saveTodos();
-    renderTodos();
-    updateCounter();
+    render();
 }
 
-// UPDATE - Start editing
 function startEdit(id) {
-    editingId = id;
-    renderTodos();
+    state.editingId = id;
+    render();
 }
 
-// UPDATE - Save edited todo
 function saveEdit(id) {
     const editInput = document.getElementById(`editInput-${id}`);
-
-    if (!editInput) {
-        console.error('Edit input not found for id:', id);
-        return;
-    }
-
     const newText = editInput.value.trim();
 
-    if (newText === '') {
+    if (!newText) {
         alert('Todo text cannot be empty!');
         return;
     }
 
-    todos = todos.map(todo =>
+    state.todos = state.todos.map(todo =>
         todo.id === id ? { ...todo, text: newText } : todo
     );
 
-    editingId = null;
+    state.editingId = null;
     saveTodos();
-    renderTodos();
-    updateCounter();
+    render();
 }
 
-// UPDATE - Cancel editing
 function cancelEdit() {
-    editingId = null;
-    renderTodos();
+    state.editingId = null;
+    render();
 }
 
-// DELETE - Remove todo
 function deleteTodo(id) {
-    if (confirm('Are you sure you want to delete this todo?')) {
-        todos = todos.filter(todo => todo.id !== id);
+    if (confirm('Are you sure?')) {
+        state.todos = state.todos.filter(todo => todo.id !== id);
         saveTodos();
-        renderTodos();
-        updateCounter();
+        render();
     }
 }
 
-// HELPER FUNCTIONS
+// READ - Display todos with filtering and searching
+function getFilteredTodos() {
+    // STEP 1: Filter by status
+    let filteredTodos = state.todos;
+
+    if (state.filterStatus === 'active') {
+        filteredTodos = filteredTodos.filter(todo => !todo.completed);
+    } else if (state.filterStatus === 'completed') {
+        filteredTodos = filteredTodos.filter(todo => todo.completed);
+    }
+
+    // STEP 2: Filter by search query
+    if (state.searchQuery) {
+        filteredTodos = filteredTodos.filter(todo =>
+            todo.text.toLowerCase().includes(state.searchQuery)
+        );
+    }
+    return filteredTodos;
+}
+
+// Rendering 
+function render() {
+    renderTodos();
+    updateCounter();
+    updateFilterButtons();
+}
+
+function renderTodos() {
+    const filteredTodos = getFilteredTodos();
+
+    dom.todoList.innerHTML = "";
+
+    if (filteredTodos.length === 0) {
+        dom.todoList.innerHTML = "<li style='text-align: center; color: #999; padding: 20px;'>No todos found</li>";
+        return;
+    }
+
+
+    filteredTodos.forEach((todo) => {
+        const li = document.createElement('li');
+        li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+
+        
+        // Check if in edit mode
+        if (state.editingId === todo.id) {
+            li.classList.add('edit-mode');
+            li.innerHTML = createEditHTML(todo.id, todo.text);
+            attachEditListener(li, todo.id);
+        } else {
+            li.innerHTML = createTodoHTML(todo);
+        }
+        
+        dom.todoList.appendChild(li);
+    })        
+}
+
+// Helper function to escape HTML special characters
+function escapeHTML(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+            
+function createEditHTML(id, text) {
+    return `
+        <input 
+            type = "text"
+            id = "editInput-${id}"
+            value = "${escapeHTML(text)}"
+            autocomplete = "off"
+        >
+        <div class = "edit-actions">
+            <button class = "saveTodos-btn">Save</button>
+            <button class = "cancel-btn">Cancel</button>
+        </div>
+    `;
+}
+
+function createTodoHTML(todo) {
+    return `
+        <input
+            type = "checkbox"
+            ${todo.completed ? "checked" : ""}
+            onchange = "toggleTodo(${todo.id})"
+        >
+        <span class="todo-text">${escapeHTML(todo.text)}</span>
+        <button class="edit-btn" onclick="startEdit(${todo.id})">Edit</button>
+        <button class="delete-btn" onclick="deleteTodo(${todo.id})">Delete</button>
+    `;
+}
+
+function attachEditListener(li, id) {
+    const editInput = li.querySelector('input[type="text"]');
+    const saveTodosBtn = li.querySelector('.saveTodos-btn');
+    const cancelBtn = li.querySelector('.cancel-btn');
+
+    editInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveEdit(id);
+        if (e.key === 'Escape') cancelEdit();
+    });
+
+    saveTodosBtn.addEventListener('click', () => saveEdit(id));
+    cancelBtn.addEventListener('click', cancelEdit);
+
+    // Auto-focus
+    setTimeout(() => {
+        editInput.focus();
+        editInput.select();
+    }, 0);
+}
+
+// update counter
+function updateCounter() {
+    const total = state.todos.length;
+    const active = state.todos.filter(todo => !todo.completed).length;
+    const completed = state.todos.filter(todo => todo.completed).length;
+
+    // update all button in one go
+    Object.entries(dom.filterButtons).forEach(([status, btn]) => {
+        const counts = { all: total, active, completed};
+        btn.querySelector('.count').textContent = `(${counts[status]})`;
+    })
+}
+
+
+function updateFilterButtons() {
+    Object.entries(dom.filterButtons).forEach(([status, btn]) => {
+        btn.classList.toggle('active', state.filterStatus === status);
+    })
+}
+
 
 // Save todos to Local Storage
 function saveTodos() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    localStorage.setItem('todos', JSON.stringify(state.todos));
 }
 
-// Update counter display in filter buttons
-function updateCounter() {
-    const total = todos.length;
-    const active = todos.filter(todo => !todo.completed).length;
-    const completed = todos.filter(todo => todo.completed).length;
 
-    // Update All button counter
-    const allCount = filterAllBtn.querySelector('.count');
-    allCount.textContent = `(${total})`;
-
-    // Update Active button counter
-    const activeCountSpan = filterActiveBtn.querySelector('.count');
-    activeCountSpan.textContent = `(${active})`;
-
-    // Update Completed button counter
-    const completedCountSpan = filterCompletedBtn.querySelector('.count');
-    completedCountSpan.textContent = `(${completed})`;
-}
-
-// Update filter button styles
-function updateFilterButtons() {
-    filterAllBtn.classList.remove('active');
-    filterActiveBtn.classList.remove('active');
-    filterCompletedBtn.classList.remove('active');
-
-    if (filterStatus === 'all') {
-        filterAllBtn.classList.add('active');
-    } else if (filterStatus === 'active') {
-        filterActiveBtn.classList.add('active');
-    } else if (filterStatus === 'completed') {
-        filterCompletedBtn.classList.add('active');
-    }
-}
