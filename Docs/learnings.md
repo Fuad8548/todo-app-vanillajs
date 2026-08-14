@@ -76,12 +76,69 @@
     console.log(box.innerHTML);
     // "\n  Hello <span style="display:none">Hidden</span> <b>World</b>\n"  → gets the actual HTML markup as a string
     ```
-- ### Adding Nodes to DOM
+- ### Adding to and removing nodes from DOM
   - **appendChild()**: This method is used to add a node to the end of the list of children of a specified parent node.
     ```javascript
     todoList.appendChild(li);
     ```
   - **removeChild()**: To remove a node from the DOM
+
+- **setAttribute(name, value)**: Sets the value of an attribute on a DOM element. If the attribute already exists, it updates it; if not, it creates it.
+  - Values are always strings, not number:
+    ```javascript
+    btn.setAttribute('data-count', 5);
+    console.log(btn.getAttribute('data-count')); // "5" (string, not number)
+    ```
+  - Different from setting a property directly: This is because HTML attribute and JS object properties are two different thing
+    - ```getAttribute("value")``` interacts with the HTML attribute in the DOM markup. It defines the default or initial value of the input field.
+    - ```.value``` interacts with the JavaScript property. It represents the current live value typed by the user or changed via script.
+    - Changing the attribute (```setAttribute()```) updates the default value. It will only update the screen if the user or a script hasn't modified the live property yet.
+    - ```.value``` updates the live state and what the user sees on the screen. It never updates the HTML attribute.
+    const input = document.createElement('input');
+    ```javascript
+    input.type = 'text';
+    input.setAttribute('value', 'foo');
+    input.value = 'bar';
+    console.log(input.getAttribute('value')); // "foo"
+    console.log(input.value);                 // "bar"
+    ```
+
+## Events
+  When the user clicks on a button or there is a change in a form, this is known as an event. In our programs, we will need to have a way to listen for these events and respond to them.
+  - **addEventListener()**: this method is used to listen for events. It takes two arguments: the event we want to listen for and a function that will be called when the event occurs.
+  ```javascript
+  element.addEventListener("event", listener);
+  ```
+  For example, we have a ```button``` element with the id   ```btn```: 
+  ```html
+  <button id="btn">Add Todo</button>
+  ```
+  ```javascript
+  const btn = document.getElementById("btn");
+
+  btn.addEventListener("click", (e) => {
+    console.log("clicked!")
+  })
+  ```
+  to input something:
+  ```html
+  <input type="text" id="input" placeholder="Type something" />
+  ```
+  ```javascript
+  const input = document.getElementById("input");
+
+  input.addEventListener("input", () => {
+    console.log(input.value);
+  });
+  ```
+  - **removeEventListener()**: 
+
+
+
+
+
+
+
 
 
 
