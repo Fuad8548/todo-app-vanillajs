@@ -48,6 +48,23 @@
 }
 
 /* ============================================
+   DARK MODE — overrides the SAME variable names,
+   so every rule below that already uses var(--color-*)
+   automatically re-themes with zero other changes.
+   ============================================ */
+body.dark-mode {
+    --color-primary: #7c8cf0;
+    --color-primary-dark: #667eea;
+    --color-gray-light: #2a2a3d;
+    --color-gray-lighter: #34344a;
+    --color-gray-dark: #b0b0c5;
+    --color-gray-darker: #e8e8f5;
+    --color-text-muted: #8888a5;
+    --color-border: #44445f;
+    --color-bg: #1e1e2e;
+}
+
+/* ============================================
    RESET & BASE
    ============================================ */
 
@@ -67,6 +84,10 @@ body {
     padding: var(--spacing-lg);
 }
 
+body.dark-mode {
+    background: linear-gradient(135deg, #2b2b45 0%, #16161f 100%);
+}
+
 /* ============================================
    CONTAINER & LAYOUT
    ============================================ */
@@ -84,6 +105,24 @@ h1 {
     color: var(--color-gray-darker);
     margin-bottom: var(--spacing-lg);
     text-align: center;
+}
+
+/* Theme toggle button */
+#themeToggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-gray-light);
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+#themeToggle:hover {
+    background: var(--color-gray-lighter);
 }
 
 

@@ -7,6 +7,7 @@ const dom = {
     loginBtn: document.getElementById('loginBtn'),
     logoutBtn: document.getElementById('logoutBtn'),
     currentUserLabel: document.getElementById('currentUserLabel'),
+    themeToggle: document.getElementById('themeToggle'),
 
     todoInput: document.getElementById('todoInput'),
     addBtn: document.getElementById('addBtn'),
@@ -23,7 +24,6 @@ const dom = {
 const state = {
     currentUser: null,   // who's logged in right now
     todos: new Map(),   // id => todo object. Map instead of Array: O(1) get/ set/ delete by id
-    // todos: JSON.parse(localStorage.getItem('todos')) || [],
     filterStatus: 'all',
     searchQuery: '',
     editingId: null
@@ -33,6 +33,7 @@ const state = {
 init();
 
 function init() {
+    initTheme();
     setupEventListeners();
 
     // NEW: resume an existing session if the browser remembers one
@@ -42,6 +43,32 @@ function init() {
     } else {
         showLoginScreen();
     }
+}
+
+// THEME: light / dark mode
+function initTheme() {
+    const saved = localStorage.getItem("theme");  // 'light' | 'dark' | null  
+
+    // // No saved preference yet? Fall back to the OS-level preference.
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === "dark" : prefersDark;
+
+    // Force (not flip) the class to match the resolved preference
+    document.body.classList.toggle("dark-mode", isDark);
+    updateThemeIcon(isDark);
+}
+
+function toggleTheme() {
+    // No boolean arg here — this IS the flip, driven by a click
+    const isDark = document.body.classList.toggle("dark-mode");
+
+    return localStorage.setItem('theme', isDark ? "dark" : "light");
+    updateThemeIcon(isDark); 
+}
+
+function updateThemeIcon(isDark) {
+    dom.themeToggle.textContent = isDark ? "☀️" : "🌙";
+    dom.themeToggle.setAttribute('aria-label', isDark ? "Switch to light mode" : "Switch to dark mode");   
 }
 
 // Auth: login/ logout
@@ -108,6 +135,8 @@ function showAppScreen() {
 
 // Event Listeners Setup
 function setupEventListeners() {
+    dom.themeToggle.addEventListener("click", toggleTheme);
+    
     // NEW: auth listeners — these are page-structural (attached once, forever),
     // exactly like addBtn/searchInput below. They don't need add/remove per session.
     dom.loginBtn.addEventListener('click', () => loginUser(dom.usernameInput.value));
