@@ -159,20 +159,21 @@
         console.log('Button clicked!');
       });
       ```
-      If you click the button it will log only "Button clicked!" in the console. But if you commment ```event.stopPropagation()``` both texts will be logged. That means button and it's parent will be clicked. the browser doesn't just fire listeners on the button. It fires the event in phases, going down then back up the DOM tree:
-      1. CAPTURE phase: window → document → .card → .btn  (top to bottom)
-      2. TARGET phase: fires on .btn itself
-      3. BUBBLE phase: .btn → .card → document → window   (bottom to top, this is the default)
+      If you click the button it will log only "Button clicked!" in the console. But if you commment out ```event.stopPropagation()``` both texts will be logged. That means not only button but also it's parent will be clicked. The browser doesn't just fire listeners on the button; it fires the event in phases, going down then back up the DOM tree:
+      1. **CAPTURE phase**: `window` → `document` → `.card` → `.btn`  (top-down)
+      2. **TARGET phase**: fires on `.btn` itself
+      3. **BUBBLE phase**: `.btn` → `.card` → `document` → `window` (bottom-up, this is the default)
       Our listeners are both in the default bubble phase. So clicking the button:
-      4. Fires on .btn → logs "Button clicked"
-      5. Then bubbles up to .card, which also has a click listener → logs "Card container clicked!"
+      4. Fires on `.btn` → logs "Button clicked"
+      5. Then bubbles up to `.card`, which also has a click listener → logs "Card container clicked!"
       - **Real-world example**: a card that's clickable to "open details," but has a delete button (X) inside it.
       - **Without stopPropagation()**: clicking the delete button also triggers "open details" — because the click bubbled up to the card's listener too. That's a bug.
+
   - **preventDefault()**: Stops reloading the page during form submission.
       ```javascript
-      form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      console.log('Form intercepted');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        console.log('Form intercepted');
       });
       ```
   - **Event Delegation**: Instead of attaching a listener to every ``<li>``, attach one to the parent and inspect event.target:
@@ -204,7 +205,7 @@
       useEffect(() => {
         window.addEventListener('mousemove', handleAction);
 
-        // 2. Return a cleanup function
+        // Return a cleanup function
         return () => {
           window.removeEventListener('mousemove', handleAction);
         };
