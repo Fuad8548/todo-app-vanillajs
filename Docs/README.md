@@ -1,4 +1,6 @@
-<div align="center">A todo app to learn vanilla.js</div>
+<div align="center">
+  **A todo app to learn vanilla.js**
+</div>
 
 ## Browser API
   - **DOM API**: A programming interface to manipulate HTML elements, their styles, and attributes.
