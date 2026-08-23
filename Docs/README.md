@@ -27,21 +27,23 @@
         ```javascript 
         const unorderedTodo = document.querySelectorAll("ul.unordered li");
         ```
-        this will return a collection of nodes as NodeList(). We can work with this collection exactly like any JS array. i.e., ```unorderedTodo.length```; iteration: 
+        This will return a collection of nodes as NodeList(). We can work with this collection exactly like any JS array. i.e., ```unorderedTodo.length```; iteration: 
+
         ```javascript 
         for (let i = 0; i < matches.length; i++) {
             console.log(matches[i]);    
         } 
         ```          
-      - all elements with a specific attribute, like all links that take users to a specific URL: 
+      - All elements with a specific attribute, like all links that take users to a specific URL: 
         ```document.querySelectorAll("a[href='https://www.example.com/']");```
 - ### Creating Element Object:
-  - **innerHTML**: It is a property of Element objects that we can use to set their HTML markup with a string. Then, we set the innerHTML property of the container to a string: 
+  - **innerHTML**: It is a property of Element objects that we can use to set their HTML markup with a string. Then, we set the `innerHTML` property of the container to a string: 
+
   ```Javascript
   const todoList = document.getElementById("todoList");
   todoList.innerHTML = "<li style='text-align: center; color: #999; padding: 20px;'>No todos found</li>";
   ```
-  Though innerHTML is helpful, it has some security issues if a user enter a string of malicious contents. So, textContent is recommended to insert plain text. 
+  Though `innerHTML` is helpful, it has some security issues if a user enter a string of malicious contents. So, `textContent` is recommended to insert plain text. 
   - **createElement()**: Another way to create new node by specifying its tag name:
     ```javascript 
     const li = document.createElement('li');
@@ -54,7 +56,7 @@
     console.log(todoList.innerText); //No todos found
     console.log(todoList.textContent); //    No todos found
     ```
-    **Let's have a quick difference among innerHTML, innerText and textContent:**
+    **Let's have a look at quick differences among innerHTML, innerText and textContent:**
     |  Property   |           Returns           | Aware of CSS/visibility? | Includes HTML tags? |                          Performance                           |
     | :---------: | :-------------------------: | :----------------------: | :-----------------: | :------------------------------------------------------------: |
     | textContent | All text (including hidden) |           ❌ No           |        ❌ No         |                        Fast (no reflow)                        |
@@ -76,7 +78,7 @@
     // "Hello World"  → gets only VISIBLE text, respects CSS (display:none skipped)
 
     console.log(box.innerHTML);
-    // "\n  Hello <span style="display:none">Hidden</span> <b>World</b>\n"  → gets the actual HTML markup as a string
+    // "Hello <span style="display:none">Hidden</span> <b>World</b>"  → gets the actual HTML markup as a string
     ```
 - ### Adding to and removing nodes from DOM
   - **appendChild()**: This method is used to add a node to the end of the list of children of a specified parent node.
@@ -92,13 +94,13 @@
     btn.setAttribute('data-count', 5);
     console.log(btn.getAttribute('data-count')); // "5" 
     ```
-  - Different from setting a property directly: This is because HTML attribute and JS object properties are two different thing
+  - Different from setting a property directly: This is because HTML attribute and JS object properties are two different thing:
     - ```getAttribute("value")``` interacts with the HTML attribute in the DOM markup. It defines the default or initial value of the input field.
     - ```.value``` interacts with the JavaScript property. It represents the current live value typed by the user or changed via script.
     - Changing the attribute (```setAttribute()```) updates the default value. It will only update the screen if the user or a script hasn't modified the live property yet.
     - ```.value``` updates the live state and what the user sees on the screen. It never updates the HTML attribute.
-    const input = document.createElement('input');
     ```javascript
+    const input = document.createElement('input');
     input.type = 'text';
     input.setAttribute('value', 'foo');
     input.value = 'bar';
@@ -151,7 +153,7 @@
 
       // The nested child button 
       const btn = document.querySelector('.btn'); 
-      deleteBtn.addEventListener('click', function(event) { 
+      btn.addEventListener('click', (event) => { 
         // Stop the event from bubbling up to the card 
         event.stopPropagation();
         console.log('Button clicked!');
