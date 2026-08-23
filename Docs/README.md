@@ -1,5 +1,5 @@
 <div align="center">
-  **A todo app to learn vanilla.js**
+  <b>A todo app to learn vanilla.js</b>
 </div>
 
 ## Browser API
