@@ -15,11 +15,22 @@
             <button id="themeToggle" aria-label="Switch to dark mode">🌙</button>
         </div>
 
+        <!-- Auth -->
         <div id="loginSection">
             <input id="usernameInput" type="text" placeholder="Enter username">
             <button id="loginBtn">Log In</button>
         </div>
 
+        <!-- Modal Section -->
+        <dialog id="confirmModal">
+            <p id="confirmMessage"></p>
+            <div class="modal-actions">
+                <button id="confirmYes">Delete</button>
+                <button id="confirmNo">Cancel</button>
+            </div>
+        </dialog>
+
+        <!-- App Section -->
         <div id="appSection" style="display:none">
             <p>Welcome <strong id="currentUserLabel"></strong>
                 <button id="logoutBtn">Log Out</button>

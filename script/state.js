@@ -2,13 +2,22 @@
 export const dom = {
     // Auth UI
     loginSection: document.getElementById('loginSection'),
-    appSection: document.getElementById('appSection'),
     usernameInput: document.getElementById('usernameInput'),
     loginBtn: document.getElementById('loginBtn'),
     logoutBtn: document.getElementById('logoutBtn'),
     currentUserLabel: document.getElementById('currentUserLabel'),
+    
+    // Header Section
     themeToggle: document.getElementById('themeToggle'),
+    
+    // Modal Section
+    confirmModal: document.getElementById("confirmModal"),
+    confirmMessage: document.getElementById("confirmMessage"),
+    confirmYes: document.getElementById("confirmYes"),
+    confirmNo: document.getElementById("confirmNo"),
 
+    // App Section 
+    appSection: document.getElementById('appSection'),
     todoInput: document.getElementById('todoInput'),
     addBtn: document.getElementById('addBtn'),
     todoList: document.getElementById('todoList'),

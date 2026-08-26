@@ -46,7 +46,7 @@ export function setupEventListeners() {
     dom.todoList.addEventListener('change', handleTodoChange);
 }
 
-// Handle all todo button clicks with event delegation
+// Handle all todo button-clicks with event delegation
 function handleTodoAction(event) {
     const target = event.target;
     const todoItem = target.closest('.todo-item');

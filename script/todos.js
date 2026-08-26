@@ -1,6 +1,7 @@
 import { state, dom } from './state.js';
 import { save } from './storage.js';
 import { render } from './render.js';
+import { showConfirmModal } from './modal.js';
 
 // CRUD Operations
 export function addTodo() {
@@ -60,8 +61,9 @@ export function cancelEdit() {
 }
 
 
-export function deleteTodo(id) {
-    if (confirm('Are you sure?')) {
+export async function deleteTodo(id) {
+    const confirmed = await showConfirmModal("Are you sure?");
+    if (confirmed) {
         state.todos.delete(id);    // O(1) instead of O(n) filter
         save();
         render();
