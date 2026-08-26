@@ -1,0 +1,59 @@
+/* ============================================
+   MODAL
+   ============================================ */
+
+#confirmModal {
+    position: fixed;
+    inset: 0;
+    margin: auto; /* re-establishes centering that the global * { margin: 0 } reset wipes out */
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    width: 320px;
+    max-width: 90%;
+    background: var(--color-bg);
+    color: var(--color-gray-darker);
+    box-shadow: var(--shadow-lg);
+}
+
+#confirmModal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+#confirmMessage {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: bold;
+}
+
+#confirmYes {
+    background: var(--color-danger);
+    color: white;
+}
+
+#confirmYes:hover {
+    background: var(--color-danger-hover);
+}
+
+#confirmNo {
+    background: var(--color-gray-light);
+    color: var(--color-gray-darker);
+}
+
+#confirmNo:hover {
+    background: var(--color-gray-lighter);
+}

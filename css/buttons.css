@@ -1,0 +1,88 @@
+/* ============================================
+   BUTTONS - Base Styles
+   ============================================ */
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    border: none;
+}
+
+/* Apply small button styles */
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+}
+
+/* Add Button */
+#addBtn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+}
+
+#addBtn:hover {
+    background: var(--color-primary-dark);
+}
+
+/* ============================================
+   BUTTON STYLES - Reusable
+   ============================================ */
+
+/* Small button base */
+.btn-small {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: bold;
+}
+
+/* Edit Button */
+.edit-btn {
+    background: var(--color-warning);
+    color: black;
+}
+
+.edit-btn:hover {
+    background: var(--color-warning-hover);
+}
+
+/* Delete Button */
+.delete-btn {
+    background: var(--color-danger);
+    color: white;
+}
+
+.delete-btn:hover {
+    background: var(--color-danger-hover);
+}
+
+/* Save Button */
+.save-btn {
+    background: var(--color-success);
+    color: white;
+}
+
+.save-btn:hover {
+    background: var(--color-success-hover);
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background: #adb5bd;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #868e96;
+}

@@ -1,0 +1,66 @@
+/* ============================================
+   DESIGN TOKENS (Colors, Spacing, etc.)
+   ============================================ */
+
+:root {
+    /* Colors */
+    --color-primary: #667eea;
+    --color-primary-dark: #5568d3;
+    --color-success: #51cf66;
+    --color-success-hover: #40c057;
+    --color-warning: #ffc107;
+    --color-warning-hover: #ffb300;
+    --color-danger: #ff6b6b;
+    --color-danger-hover: #ff5252;
+    --color-gray-light: #f5f5f5;
+    --color-gray-lighter: #efefef;
+    --color-gray-dark: #666;
+    --color-gray-darker: #333;
+    --color-text-muted: #999;
+    --color-border: #ddd;
+    --color-bg: white;
+
+    /* Spacing */
+    --spacing-xs: 2px;
+    --spacing-sm: 5px;
+    --spacing-md: 10px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 30px;
+
+    /* Border Radius */
+    --radius-sm: 3px;
+    --radius-md: 5px;
+    --radius-lg: 10px;
+
+    /* Transitions */
+    --transition: all 0.3s ease;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+    /* Font */
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-sm: 12px;
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+}
+
+/* ============================================
+   DARK MODE — overrides the SAME variable names,
+   so every rule in every other file that already uses
+   var(--color-*) automatically re-themes with zero changes.
+   ============================================ */
+
+body.dark-mode {
+    --color-primary: #7c8cf0;
+    --color-primary-dark: #667eea;
+    --color-gray-light: #2a2a3d;
+    --color-gray-lighter: #34344a;
+    --color-gray-dark: #b0b0c5;
+    --color-gray-darker: #e8e8f5;
+    --color-text-muted: #8888a5;
+    --color-border: #44445f;
+    --color-bg: #1e1e2e;
+}

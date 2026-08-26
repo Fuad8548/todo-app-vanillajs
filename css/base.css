@@ -1,0 +1,51 @@
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-lg);
+    transition: background 0.3s ease;
+}
+
+body.dark-mode {
+    background: linear-gradient(135deg, #2b2b45 0%, #16161f 100%);
+}
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
+
+.container {
+    background: var(--color-bg);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+    transition: background 0.3s ease;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+h1 {
+    color: var(--color-gray-darker);
+    text-align: center;
+}

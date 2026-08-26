@@ -1,0 +1,17 @@
+/* Theme toggle button */
+#themeToggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-gray-light);
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+#themeToggle:hover {
+    background: var(--color-gray-lighter);
+}

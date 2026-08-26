@@ -33,6 +33,7 @@ export const dom = {
 export const state = {
     currentUser: null,   // who's logged in right now
     todos: new Map(),   // id => todo object. Map instead of Array: O(1) get/ set/ delete by id
+    lastAddedId: '',
     filterStatus: 'all',
     searchQuery: '',
     editingId: null

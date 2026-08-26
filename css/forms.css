@@ -1,0 +1,46 @@
+/* ============================================
+   INPUTS
+   ============================================ */
+
+input[type="text"],
+input[type="checkbox"] {
+    font-family: inherit;
+}
+
+/* Search & Add Input Shared Styles */
+.search-section input,
+#todoInput {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+    outline: none;
+    transition: var(--transition);
+}
+
+.search-section input:focus,
+#todoInput:focus {
+    border-color: var(--color-primary);
+}
+
+.search-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.search-section input {
+    width: 100%;
+}
+
+/* ============================================
+   INPUT SECTION (Add Todo)
+   ============================================ */
+
+.input-section {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+#todoInput {
+    flex: 1;
+}

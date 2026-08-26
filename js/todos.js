@@ -2,6 +2,8 @@ import { state, dom } from './state.js';
 import { save } from './storage.js';
 import { render } from './render.js';
 import { showConfirmModal } from './modal.js';
+import { animateIn, animateOut } from './animations.js';
+
 
 // CRUD Operations
 export function addTodo() {
@@ -18,6 +20,8 @@ export function addTodo() {
         text,
         completed: false
     });
+
+    state.lastAddedId = id, // consumed once by render.js, then cleared
 
     dom.todoInput.value = '';
     save();
@@ -63,9 +67,13 @@ export function cancelEdit() {
 
 export async function deleteTodo(id) {
     const confirmed = await showConfirmModal("Are you sure?");
-    if (confirmed) {
-        state.todos.delete(id);    // O(1) instead of O(n) filter
-        save();
-        render();
-    }
+    if (!confirmed) return;
+
+    const li = dom.todoList.querySelector(`[data-todo-id="${id}"]`);
+    if (li) await animateOut(li); // wait for the fade-out before deleting anything
+
+    state.todos.delete(id);    // O(1) instead of O(n) filter
+    save();
+    render();
+
 }

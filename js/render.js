@@ -1,6 +1,6 @@
 import { state, dom } from './state.js';
 import { matchesSearch } from './search.js';
-
+import { animateIn } from './animations.js';
 
 
 // Filtering & Searching
@@ -65,7 +65,12 @@ function renderTodos() {
         }
 
         dom.todoList.appendChild(li);
+        if (todo.id === state.lastAddedId) {
+            animateIn(li);
+        }
     });
+
+    state.lastAddedId = null;
 }
 
 function createEditHTML(id, text) {
