@@ -2,7 +2,7 @@ import { state, dom } from './state.js';
 import { save } from './storage.js';
 import { render } from './render.js';
 import { showConfirmModal } from './modal.js';
-import { animateIn, animateOut } from './animations.js';
+import { animateOut } from './animations.js';
 
 
 // CRUD Operations
@@ -18,7 +18,8 @@ export function addTodo() {
 
     state.todos.set(id, {   // O(1) insert
         text,
-        completed: false
+        completed: false,
+        archived: false
     });
 
     state.lastAddedId = id, // consumed once by render.js, then cleared
@@ -64,6 +65,28 @@ export function cancelEdit() {
     render();
 }
 
+export function archiveTodo(id) {
+    const todo = state.todos.get(id);
+    if (!todo) return;
+    todo.archived = true;
+    save();
+    render();
+}
+
+export function unarchiveTodo(id) {
+    const todo = state.todos.get(id);
+    if (!todo) return;
+    todo.archived = false;
+    save();
+    render();    
+}
+
+function removeTodo(id) {
+    state.todos.delete(id);
+    save();
+    render();   
+}
+
 
 export async function deleteTodo(id) {
     const confirmed = await showConfirmModal("Are you sure?");
@@ -76,4 +99,9 @@ export async function deleteTodo(id) {
     save();
     render();
 
+}
+
+// swipe-triggered path
+export function deleteTodoDirect(id) {
+    removeTodo(id);  
 }

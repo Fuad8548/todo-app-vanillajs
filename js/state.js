@@ -1,3 +1,5 @@
+// import { archiveTodo } from "./todos";
+
 // DOM Cache
 export const dom = {
     // Auth UI
@@ -25,7 +27,8 @@ export const dom = {
     filterButtons: {
         all: document.getElementById('filterAll'),
         active: document.getElementById('filterActive'),
-        completed: document.getElementById('filterCompleted')
+        completed: document.getElementById('filterCompleted'),
+        archived: document.getElementById("filterArchived")
     }
 };
 

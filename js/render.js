@@ -10,10 +10,12 @@ function getFilteredTodos() {
     // build a NEW object: spread todo's fields, then add/overwrite `id`
     let filtered = [...state.todos.entries()].map(([id, todo]) => ({...todo, id}));
 
-    if (state.filterStatus === 'active') {
-        filtered = filtered.filter(todo => !todo.completed);
+    if (state.filterStatus === "archived") {
+        filtered = filtered.filter(todo => todo.archived);
+    } else if (state.filterStatus === 'active') {
+            filtered = filtered.filter(todo => !todo.completed && !todo.archived);
     } else if (state.filterStatus === 'completed') {
-        filtered = filtered.filter(todo => todo.completed);
+            filtered = filtered.filter(todo => todo.completed && !todo.archived);
     }
 
     if (state.searchQuery) {
@@ -43,10 +45,13 @@ function renderTodos() {
         return;
     }
 
-    filtered.forEach(todo => {
+    filtered.forEach((todo, index) => {
+        const serial = index + 1;
+        
         const li = document.createElement('li');
-        li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+        li.className = `todo-item ${todo.completed ? 'completed' : ''} ${todo.archived ? "archived" : ""}`;
         li.dataset.todoId = todo.id;  // Store ID as data attribute
+        li.dataset.serial = serial;
 
         if (state.editingId === todo.id) {
             li.classList.add('edit-mode');
@@ -68,6 +73,8 @@ function renderTodos() {
         if (todo.id === state.lastAddedId) {
             animateIn(li);
         }
+
+        li.innerHTML = state.editingId === todo.id ? createEditHTML(todo.id, todo.text) : createTodoHTML(todo, serial);
     });
 
     state.lastAddedId = null;
@@ -89,18 +96,26 @@ function createEditHTML(id, text) {
     `;
 }
 
-function createTodoHTML(todo) {
-    // NEW: no more inline onchange — the checkbox is now handled by
-    // the delegated 'change' listener (handleTodoChange) on dom.todoList
-    return `
-        <input 
-            type="checkbox" 
-            ${todo.completed ? 'checked' : ''}
-        >
-        <span class="todo-text">${escapeHTML(todo.text)}</span>
+// swap Edit for Restore when viewing an archived item
+// render.js — createTodoHTML, rewritten to branch on archived state
+// and include: a decorative swipe-hint icon, a serial number (see point 4), and a manual Archive button
+function createTodoHTML(todo, serial) {
+    const icon = `<span class="swipe-hint" title="Swipe left to archive, right to delete">⋮⋮</span>`;
+    const number = `<span class="todo-serial">${serial}.</span>`;
+    const checkbox = `<input type="checkbox" ${todo.completed ? 'checked' : ''}>`;
+    const text = `<span class="todo-text">${escapeHTML(todo.text)}</span>`;
+
+    if (todo.archived) {
+        return `${icon}${number}${checkbox}${text}
+            <span class="archived-badge">Archived</span>
+            <button class="restore-btn">Restore</button>
+            <button class="delete-btn">Delete</button>`;
+    }
+
+    return `${icon}${number}${checkbox}${text}
+        <button class="archive-btn">Archive</button>
         <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
-    `;
+        <button class="delete-btn">Delete</button>`;
 }
 
 
@@ -115,15 +130,20 @@ function escapeHTML(text) {
 function updateCounter() {
     // single pass instead of three separate scans
     let completed = 0;
-    for (const todo of state.todos.values()) {
+    let archived = 0;
+    const total = state.todos.size;
+
+    for (const todo of state.todos.values()) {    
+        if (todo.archived) {
+            archived ++;
+        }
         if (todo.completed) completed++;
     }
-    
-    const total = state.todos.size;  // Map uses .size, not .length
-    const active = total - completed;
+
+    const active = total - archived - completed;
 
     Object.entries(dom.filterButtons).forEach(([status, btn]) => {
-        const counts = { all: total, active, completed };
+        const counts = { all: total, active, completed, archived };
         btn.querySelector('.count').textContent = `(${counts[status]})`;
     });
 }

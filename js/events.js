@@ -3,8 +3,8 @@ import { toggleTheme } from './theme.js';
 import { loginUser, logoutUser } from './auth.js';
 import { addTodo, toggleTodo, startEdit, saveEdit, cancelEdit, deleteTodo } from './todos.js';
 import { render } from './render.js';
-
-
+import { unarchiveTodo } from './todos.js';
+import { archiveTodo } from './todos.js';
 
 // Event Listeners Setup
 export function setupEventListeners() {
@@ -63,6 +63,10 @@ function handleTodoAction(event) {
         saveEdit(id);
     } else if (target.classList.contains('cancel-btn')) {
         cancelEdit();
+    } else if (target.classList.contains("restore-btn")) {
+        unarchiveTodo(id)
+    } else if (target.classList.contains("archive-btn")) {
+        archiveTodo(id);
     }
 }
 

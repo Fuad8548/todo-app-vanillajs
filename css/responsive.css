@@ -22,10 +22,12 @@
     .input-section,
     .filter-buttons {
         gap: var(--spacing-sm);
+        flex-wrap: wrap;
     }
 
     .filter-btn .count {
         font-size: 10px;
+        flex: 1 1 45%;
     }
 
     .todo-item {

@@ -15,6 +15,22 @@
     border-radius: var(--radius-md);
     gap: var(--spacing-md);
     transition: var(--transition);
+
+    /* Swipping */
+    touch-action: pan-y;
+    /* let vertical page-scroll still work; JS handles horizontal swipe itself */
+}
+
+.todo-item.archived {
+    opacity: 0.5;
+}
+
+.todo-item.swipe-delete {
+    background: var(--color-danger);
+}
+
+.todo-item.swipe-archive {
+    background: var(--color-primary);
 }
 
 .todo-item:hover {

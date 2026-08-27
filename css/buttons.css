@@ -14,7 +14,9 @@ button {
 .edit-btn,
 .delete-btn,
 .save-btn,
-.cancel-btn {
+.cancel-btn,
+.restore-btn,
+.archive-btn {
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--radius-sm);
     font-size: var(--font-size-sm);
@@ -85,4 +87,49 @@ button {
 
 .cancel-btn:hover {
     background: #868e96;
+}
+
+.restore-btn {
+    background: var(--color-success);
+    color: white;
+}
+
+.restore-btn:hover {
+    background: var(--color-success-hover);
+}
+
+/* archive button */
+/* buttons.css */
+.archive-btn {
+    background: var(--color-primary);
+    color: white;
+}
+
+.archive-btn:hover {
+    background: var(--color-primary-dark);
+}
+
+/* add .archive-btn to the existing shared small-button selector list too */
+
+.archived-badge {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.swipe-hint {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    cursor: grab;
+    /* foreshadowing — this doubles as your future drag-reorder handle */
+    pointer-events: none;
+    /* purely decorative — don't let it intercept the swipe gesture itself */
+}
+
+.todo-serial {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    min-width: 20px;
 }
