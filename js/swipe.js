@@ -11,7 +11,7 @@ export function initSwipeGestures() {
 
 function handlePointerDown(e) {
     // Ignore drags starting on interactive controls, so checkbox/Edit/Delete clicks still work normally
-    if (e.target.closest('button, input, .edit-input')) return;
+    if (e.target.closest('button, input, .edit-input, .drag-handle')) return;
 
     const todoItem = e.target.closest('.todo-item');
     if (!todoItem) return;

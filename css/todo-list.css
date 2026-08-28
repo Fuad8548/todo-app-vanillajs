@@ -25,6 +25,21 @@
     opacity: 0.5;
 }
 
+.drag-handle {
+    cursor: grab;
+    /* open-hand cursor, invites grabbing */
+    touch-action: none;
+    /* stop the browser's own vertical scroll from fighting the drag */
+    pointer-events: auto;
+}
+
+.todo-item.dragging {
+    opacity: 0.85;
+    box-shadow: var(--shadow-lg);
+    cursor: grabbing;
+    /* closed-hand cursor while actively dragging */
+}
+
 .todo-item.swipe-delete {
     background: var(--color-danger);
 }

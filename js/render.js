@@ -100,20 +100,21 @@ function createEditHTML(id, text) {
 // render.js — createTodoHTML, rewritten to branch on archived state
 // and include: a decorative swipe-hint icon, a serial number (see point 4), and a manual Archive button
 function createTodoHTML(todo, serial) {
-    const icon = `<span class="swipe-hint" title="Swipe left to archive, right to delete">⋮⋮</span>`;
+    const icon = `<span class="swipe-hint drag-handle" title="Drag to reorder • Swipe to archive/delete">⠿</span>`;
     const number = `<span class="todo-serial">${serial}.</span>`;
-    const checkbox = `<input type="checkbox" ${todo.completed ? 'checked' : ''}>`;
     const text = `<span class="todo-text">${escapeHTML(todo.text)}</span>`;
 
     if (todo.archived) {
-        return `${icon}${number}${checkbox}${text}
+        return `${icon}${number}${text}
             <span class="archived-badge">Archived</span>
             <button class="restore-btn">Restore</button>
             <button class="delete-btn">Delete</button>`;
     }
 
-    return `${icon}${number}${checkbox}${text}
-        <button class="archive-btn">Archive</button>
+    const checkbox = `<input type="checkbox" ${todo.completed ? 'checked' : ''}>`;
+    const archiveBtn = todo.completed ? '' : `<button class="archive-btn">Archive</button>`;
+
+    return `${icon}${number}${checkbox}${text}${archiveBtn}
         <button class="edit-btn">Edit</button>
         <button class="delete-btn">Delete</button>`;
 }
@@ -136,6 +137,7 @@ function updateCounter() {
     for (const todo of state.todos.values()) {    
         if (todo.archived) {
             archived ++;
+            continue;
         }
         if (todo.completed) completed++;
     }
