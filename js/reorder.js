@@ -7,21 +7,29 @@ export function initReorder() {
 }
 
 function handlePointerDown(e) {
-    if (state.filterStatus !== 'all') return; // see limitation above — only safe in the unfiltered view
+    if (state.filterStatus !== 'all') return;
 
     const handle = e.target.closest('.drag-handle');
-    if (!handle) return; // reorder ONLY starts from the handle, never from the row body
+    if (!handle) return;
 
     const draggedItem = handle.closest('.todo-item');
     if (!draggedItem) return;
 
+    e.stopImmediatePropagation();
+
+    const startY = e.clientY; // NEW — needed to compute how far the pointer has moved
     draggedItem.setPointerCapture(e.pointerId);
     draggedItem.classList.add('dragging');
+    draggedItem.style.position = 'relative'; // NEW — lets transform visually lift it above the flow
+    draggedItem.style.zIndex = '10';          // NEW — keeps it drawn on top of siblings while dragging
 
     function onMove(moveEvent) {
+        const deltaY = moveEvent.clientY - startY;
+        draggedItem.style.transform = `translateY(${deltaY}px)`; // NEW — this IS the visible "follow the cursor" feedback
+
         const afterElement = getSiblingAfterPointer(moveEvent.clientY);
         if (afterElement == null) {
-            dom.todoList.appendChild(draggedItem); // dragged below the last row
+            dom.todoList.appendChild(draggedItem);
         } else {
             dom.todoList.insertBefore(draggedItem, afterElement);
         }
@@ -32,6 +40,9 @@ function handlePointerDown(e) {
         draggedItem.removeEventListener('pointerup', onUp);
         draggedItem.removeEventListener('pointercancel', onUp);
         draggedItem.classList.remove('dragging');
+        draggedItem.style.transform = ''; // NEW — reset, since its new DOM slot IS the final position now
+        draggedItem.style.position = '';
+        draggedItem.style.zIndex = '';
         commitNewOrder();
     }
 
