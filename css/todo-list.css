@@ -15,14 +15,28 @@
     border-radius: var(--radius-md);
     gap: var(--spacing-md);
     transition: var(--transition);
-
+    cursor: ew-resize;
+    /* hints "this moves left/right" — distinct from the handle's grab cursor */
     /* Swipping */
     touch-action: pan-y;
     /* let vertical page-scroll still work; JS handles horizontal swipe itself */
+    user-select: none;
+    /* stops text getting selected mid-swipe drag */
 }
 
 .todo-item.archived {
     opacity: 0.5;
+}
+
+/* filter, not transform — swipe.js sets style.transform directly during a real drag,
+   so using transform here for the press effect would fight with that inline style */
+.todo-item:active {
+    filter: brightness(0.97);
+}
+
+.todo-item:hover {
+    background: var(--color-gray-lighter);
+    box-shadow: var(--shadow-sm);
 }
 
 .drag-handle {
@@ -46,11 +60,6 @@
 
 .todo-item.swipe-archive {
     background: var(--color-primary);
-}
-
-.todo-item:hover {
-    background: var(--color-gray-lighter);
-    box-shadow: var(--shadow-sm);
 }
 
 /* Checkbox */

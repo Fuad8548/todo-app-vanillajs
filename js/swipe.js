@@ -6,10 +6,10 @@ import { showToast } from './toast.js';
 const SWIPE_THRESHOLD = 80; // px of horizontal drag needed to count as a real swipe
 
 export function initSwipeGestures() {
-    dom.todoList.addEventListener('pointerdown', handlePointerDown);
+    dom.todoList.addEventListener('pointerdown', handleSwipeStart);
 }
 
-function handlePointerDown(e) {
+function handleSwipeStart(e) {
     // Ignore drags starting on interactive controls, so checkbox/Edit/Delete clicks still work normally
     if (e.target.closest('button, input, .edit-input, .drag-handle')) return;
 

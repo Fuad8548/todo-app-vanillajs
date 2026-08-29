@@ -3,10 +3,10 @@ import { render } from './render.js';
 import { save } from './storage.js';
 
 export function initReorder() {
-    dom.todoList.addEventListener('pointerdown', handlePointerDown);
+    dom.todoList.addEventListener('pointerdown', handleReorderStart);
 }
 
-function handlePointerDown(e) {
+function handleReorderStart(e) {
     if (state.filterStatus !== 'all') return;
 
     const handle = e.target.closest('.drag-handle');
@@ -17,21 +17,31 @@ function handlePointerDown(e) {
 
     e.stopImmediatePropagation();
 
-    const startY = e.clientY; // NEW — needed to compute how far the pointer has moved
+    let startY = e.clientY; // CHANGED: was `const` — must be reassignable now
     draggedItem.setPointerCapture(e.pointerId);
     draggedItem.classList.add('dragging');
-    draggedItem.style.position = 'relative'; // NEW — lets transform visually lift it above the flow
-    draggedItem.style.zIndex = '10';          // NEW — keeps it drawn on top of siblings while dragging
+    draggedItem.style.position = 'relative';
+    draggedItem.style.zIndex = '10';
 
     function onMove(moveEvent) {
         const deltaY = moveEvent.clientY - startY;
-        draggedItem.style.transform = `translateY(${deltaY}px)`; // NEW — this IS the visible "follow the cursor" feedback
+        draggedItem.style.transform = `translateY(${deltaY}px)`;
 
         const afterElement = getSiblingAfterPointer(moveEvent.clientY);
-        if (afterElement == null) {
-            dom.todoList.appendChild(draggedItem);
-        } else {
-            dom.todoList.insertBefore(draggedItem, afterElement);
+        const currentNext = draggedItem.nextElementSibling;
+
+        // Only touch the DOM (and reset the reference point) when the target slot actually changed —
+        // calling insertBefore/appendChild every single pointermove, even redundantly, is what feeds the drift
+        if (afterElement !== currentNext && afterElement !== draggedItem) {
+            if (afterElement == null) {
+                dom.todoList.appendChild(draggedItem);
+            } else {
+                dom.todoList.insertBefore(draggedItem, afterElement);
+            }
+            // The item's new DOM slot IS its current correct visual position now —
+            // so "how far it's traveled from here" restarts at zero
+            startY = moveEvent.clientY;
+            draggedItem.style.transform = 'translateY(0px)';
         }
     }
 
@@ -40,7 +50,7 @@ function handlePointerDown(e) {
         draggedItem.removeEventListener('pointerup', onUp);
         draggedItem.removeEventListener('pointercancel', onUp);
         draggedItem.classList.remove('dragging');
-        draggedItem.style.transform = ''; // NEW — reset, since its new DOM slot IS the final position now
+        draggedItem.style.transform = '';
         draggedItem.style.position = '';
         draggedItem.style.zIndex = '';
         commitNewOrder();
