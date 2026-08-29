@@ -64,8 +64,8 @@
 
 /* Checkbox */
 .todo-item input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
     accent-color: var(--color-primary);
 }

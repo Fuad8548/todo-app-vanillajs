@@ -121,7 +121,7 @@ button {
 
 .swipe-hint {
     color: var(--color-text-muted);
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-lg);
     cursor: grab;
     /* foreshadowing — this doubles as your future drag-reorder handle */
     pointer-events: none;
